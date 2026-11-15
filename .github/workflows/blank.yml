@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meu PC Virtual</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#0078d7;color:white;height:100vh;overflow:hidden}
+.desktop{height:calc(100vh - 45px);padding:20px;display:flex;flex-direction:column;align-items:flex-start;gap:25px}
+.app{width:75px;text-align:center;cursor:pointer;font-size:13px;text-shadow:1px 1px 3px #333}
+.app span{display:block;font-size:35px;margin-bottom:5px}
+.taskbar{position:fixed;bottom:0;height:45px;background:#171717;width:100%;display:flex;align-items:center;gap:20px;padding:0 15px}
+.start{font-size:26px;cursor:pointer}
+.clock{margin-left:auto;font-size:13px}
+.menu{display:none;position:fixed;bottom:45px;left:0;width:270px;height:390px;background:#202020;padding:20px;box-shadow:0 0 15px #111}
+.menu button{display:block;width:100%;padding:13px;margin:8px 0;background:#333;color:white;border:0;text-align:left}
+.window{display:none;position:fixed;top:10%;left:5%;width:90%;height:70%;background:#eee;color:#222;box-shadow:0 5px 20px #222}
+.head{background:#222;color:white;padding:12px}
+.content{padding:15px}
+.close{float:right;cursor:pointer}
+input{padding:10px;width:100%}
+</style>
+</head>
+<body>
+<div class="desktop">
+<div class="app" onclick="openApp('Meu Computador')"><span>🖥️</span>Este Computador</div>
+<div class="app" onclick="openApp('Navegador')"><span>🌐</span>Navegador</div>
+<div class="app" onclick="openApp('Bloco de Notas')"><span>📝</span>Bloco de Notas</div>
+<div class="app" onclick="openApp('Terminal')"><span>⌨️</span>Terminal</div>
+<div class="app" onclick="openApp('Configurações')"><span>⚙️</span>Configurações</div>
+</div>
+
+<div class="menu" id="menu">
+<h2>Iniciar</h2>
+<button onclick="openApp('Meu Computador')">🖥️ Este Computador</button>
+<button onclick="openApp('Navegador')">🌐 Navegador</button>
+<button onclick="openApp('Bloco de Notas')">📝 Bloco de Notas</button>
+<button onclick="openApp('Terminal')">⌨️ Terminal</button>
+<button onclick="openApp('Configurações')">⚙️ Configurações</button>
+</div>
+
+<div class="window" id="window">
+<div class="head"><span id="title">Aplicativo</span><span class="close" onclick="closeApp()">✕</span></div>
+<div class="content" id="content"></div>
+</div>
+
+<div class="taskbar">
+<div class="start" onclick="toggleMenu()">⊞</div>
+<span>🔍 Pesquisar</span>
+<div class="clock" id="clock"></div>
+</div>
+
+<script>
+function toggleMenu(){
+let m=document.getElementById('menu');
+m.style.display=m.style.display==='block'?'none':'block';
+}
+function openApp(name){
+document.getElementById('menu').style.display='none';
+document.getElementById('title').innerText=name;
+let content=document.getElementById('content');
+if(name==='Navegador'){
+content.innerHTML='<h3>Navegador</h3><input id="url" placeholder="Digite um endereço"><button onclick="go()">Abrir</button>';
+}else if(name==='Bloco de Notas'){
+content.innerHTML='<h3>Bloco de Notas</h3><textarea style="width:100%;height:220px" placeholder="Digite aqui..."></textarea>';
+}else if(name==='Terminal'){
+content.innerHTML='<h3>Terminal demonstrativo</h3><p>PC Virtual Windows 10</p><input placeholder="Digite um comando" id="cmd"><button onclick="command()">Executar</button><p id="result"></p>';
+}else{
+content.innerHTML='<h3>'+name+'</h3><p>Bem-vindo ao seu PC virtual!</p>';
+}
+document.getElementById('window').style.display='block';
+}
+function closeApp(){document.getElementById('window').style.display='none'}
+function go(){
+let u=document.getElementById('url').value;
+if(!/^https?:\/\//i.test(u))u='https://'+u;
+window.open(u,'_blank');
+}
+function command(){
+let c=document.getElementById('cmd').value;
+document.getElementById('result').innerText='Comando demonstrativo: '+c;
+}
+function clock(){
+document.getElementById('clock').innerText=new Date().toLocaleTimeString('pt-BR');
+}
+setInterval(clock,1000);clock();
+</script>
+</body>
+</html>
